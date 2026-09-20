@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ficha de Ensaio Regional e Local, genérica e por voz</title>
+<meta name="description" content="Ficha completa de ensaio regional, local e parcial. Genérica para qualquer cidade e comum. Funciona no celular, com voz, sem login e sem custo.">
+<style>
+:root{--bg:#f4f6f4;--card:#fff;--ink:#1d2b22;--mut:#64766a;--vd:#1e5c3f;--gd:#c9a24b;--ln:rgba(29,43,34,.15);--rd:16px}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:system-ui,-apple-system,Segoe UI,Roboto,sans-serif;margin:0;padding-bottom:96px}
+.hd{position:sticky;top:0;z-index:20;background:rgba(244,246,244,.94);backdrop-filter:blur(10px);border-bottom:1px solid var(--ln);padding:.8rem 1rem}
+.hd h1{font-size:1.15rem;margin:0}
+.hd p{margin:.15rem 0 0;color:var(--mut);font-size:.85rem}
+.wrap{max-width:44rem;margin:0 auto;padding:1rem}
+.card{background:var(--card);border:1px solid var(--ln);border-radius:var(--rd);padding:1rem;margin-bottom:1rem}
+.card h2{font-size:.78rem;letter-spacing:.18em;text-transform:uppercase;color:var(--vd);margin:0 0 .8rem}
+label{display:block;font-size:.8rem;color:var(--mut);margin:.6rem 0 .25rem}
+input,select,textarea{width:100%;border:1px solid var(--ln);border-radius:12px;padding:.8rem;font-size:1rem;font-family:inherit;background:#fff;color:var(--ink)}
+textarea{min-height:4.5rem;resize:vertical}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:.6rem}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem}
+.seg{display:flex;gap:.5rem;flex-wrap:wrap}
+.seg button{flex:1;min-width:7rem;border:1px solid var(--ln);background:#fff;border-radius:999px;padding:.8rem;font-weight:700;cursor:pointer;font-size:.9rem}
+.seg button.on{background:var(--vd);color:#fff;border-color:var(--vd)}
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+ @media(max-width:420px){.grid{grid-template-columns:1fr 1fr}.row{grid-template-columns:1fr 1fr}}
+.ctr{display:flex;align-items:center;justify-content:space-between;gap:.5rem;border:1px solid var(--ln);border-radius:12px;padding:.5rem .6rem}
+.ctr b{font-size:.9rem}
+.ctr div{display:flex;align-items:center;gap:.4rem}
+.ctr button{width:2.4rem;height:2.4rem;border-radius:50%;border:1px solid var(--ln);background:#fff;font-size:1.2rem;cursor:pointer}
+.ctr button.plus{background:var(--vd);color:#fff;border-color:var(--vd)}
+.ctr span{min-width:2.2rem;text-align:center;font-weight:800;font-size:1.05rem}
+.total{display:flex;justify-content:space-between;align-items:center;background:var(--ink);color:#fff;border-radius:12px;padding:.8rem 1rem;margin-top:.6rem;font-weight:800}
+.item{display:flex;gap:.5rem;margin-bottom:.5rem}
+.item input{flex:1}
+.item button{border:1px solid var(--ln);background:#fff;border-radius:12px;padding:0 1rem;cursor:pointer;font-size:1.1rem}
+.add{width:100%;border:1px dashed var(--vd);color:var(--vd);background:none;border-radius:12px;padding:.8rem;font-weight:700;cursor:pointer}
+.bar{position:fixed;left:0;right:0;bottom:0;z-index:30;background:#fff;border-top:1px solid var(--ln);display:flex;gap:.5rem;padding:.6rem;max-width:44rem;margin:0 auto}
+.bar button{flex:1;border-radius:999px;padding:.9rem .4rem;font-weight:800;font-size:.85rem;cursor:pointer;border:1px solid var(--ln);background:#fff}
+.bar .p{background:var(--vd);color:#fff;border-color:var(--vd)}
+.bar .v{background:var(--gd);border-color:var(--gd)}
+#vout{background:#14231b;color:#d8e5dc;border-radius:12px;padding:.7rem;font-size:.9rem;min-height:2.6rem;line-height:1.5;margin-top:.6rem}
+.hist{border-top:1px solid var(--ln);padding:.7rem 0;font-size:.9rem}
+.hist div{display:flex;justify-content:space-between;gap:.5rem;align-items:center;padding:.4rem 0}
+.hist small{color:var(--mut)}
+.hist button{border:1px solid var(--ln);background:#fff;border-radius:10px;padding:.45rem .7rem;cursor:pointer;font-size:.8rem}
+.cmds{font-size:.85rem;color:var(--mut);line-height:1.7}
+@media print{.hd,.bar,#cfg,#histCard,#vozCard,.noPrint{display:none !important}body{padding:0;background:#fff}.card{border:0;padding:.4rem 0}input,textarea,select{border:0;padding:.1rem}}
+</style>
+</head>
+<body>
+<header class="hd">
+<h1>Ficha de Ensaio Regional e Local</h1>
+<p>Genérica para qualquer cidade e comum. Celular, voz e sem custo.</p>
+</header>
+<div class="wrap">
+
+<div class="card" id="cfg">
+<h2>1. Cidade e comum</h2>
+<label for="cidade">Cidade (ex.: São José dos Campos)</label>
+<input id="cidade" value="São José dos Campos" autocomplete="off">
+<div class="row">
+<div><label for="comum">Comum anfitriã</label><input id="comum" placeholder="Ex.: Jardim Aquarius" autocomplete="off"></div>
+<div><label for="endereco">Endereço do ensaio</label><input id="endereco" placeholder="Rua, número, bairro" autocomplete="off"></div>
+</div>
+<label for="comuns">Comuns salvas (toque para usar)</label>
+<div class="seg" id="comuns"></div>
+<div class="item" style="margin-top:.6rem"><input id="novaComum" placeholder="Adicionar comum e tocar em +"><button id="addComum" aria-label="Adicionar comum">+</button></div>
+</div>
+
+<div class="card">
+<h2>2. Cabeçalho do ensaio</h2>
+<label>Tipo</label>
+<div class="seg" id="tipo">
+<button data-t="regional" class="on">Regional</button>
+<button data-t="local">Local</button>
+<button data-t="parcial">Parcial</button>
+</div>
+<div class="row">
+<div><label for="data">Data</label><input id="data" type="date"></div>
+<div><label for="hora">Horário</label><input id="hora" type="time" value="19:30"></div>
+</div>
+<div class="row">
+<div><label for="encReg">Encarregado regional</label><input id="encReg" placeholder="Nome" autocomplete="off"></div>
+<div><label for="encLoc">Encarregado local</label><input id="encLoc" placeholder="Nome" autocomplete="off"></div>
+</div>
+</div>
+
+<div class="card">
+<h2>3. Quantidade de músicos</h2>
+<div class="grid" id="contagem"></div>
+<div class="total"><span>Total geral</span><span id="total">0</span></div>
+</div>
+
+<div class="card">
+<h2>4. Hinos ensaiados</h2>
+<div id="hinos"></div>
+<button class="add" id="addHino">+ Adicionar hino</button>
+</div>
+
+<div class="card">
+<h2>5. Métodos GEM e fases</h2>
+<div id="metodos"></div>
+<button class="add" id="addMet">+ Adicionar método ou fase</button>
+</div>
+
+<div class="card">
+<h2>6. Frequência (opcional, ensaio local)</h2>
+<div id="freq"></div>
+<button class="add" id="addFreq">+ Adicionar nome</button>
+</div>
+
+<div class="card">
+<h2>7. Observações e próxima data</h2>
+<label for="obs">Ocorrências, faltas relevantes, visitantes</label>
+<textarea id="obs" placeholder="Ex.: 2 faltas justificadas, órgão com defeito, próximo ensaio dia..."></textarea>
+<div class="row">
+<div><label for="prox">Próximo ensaio</label><input id="prox" type="date"></div>
+<div><label for="visto">Visto do encarregado</label><input id="visto" placeholder="Nome de quem confere" autocomplete="off"></div>
+</div>
+</div>
+
+<div class="card" id="vozCard">
+<h2>8. Preencher por voz</h2>
+<p class="cmds">Toque no microfone e fale, ex.: “ensaio regional amanhã na comum Aquarius”, “adicionar hino 123”, “5 violinos”, “10 organistas”, “irmandade 40”, “observação órgão com defeito”, “salvar ficha”.</p>
+<div class="seg">
+<button id="vbtn" style="background:var(--gd);border-color:var(--gd)">Falar agora</button>
+<button id="ajuda">Ver comandos</button>
+</div>
+<div id="vout">Toque em falar e dite os dados...</div>
+</div>
+
+<div class="card noPrint" id="histCard">
+<h2>9. Fichas salvas neste aparelho</h2>
+<div id="hist"><p class="cmds">Nenhuma ficha salva ainda.</p></div>
+<div class="seg">
+<button id="expJson">Baixar JSON</button>
+<button id="expCsv">Baixar CSV</button>
+<button id="imp">Imprimir A4</button>
+<button id="zap">Enviar no WhatsApp</button>
+</div>
+</div>
+
+</div>
+<nav class="bar">
+<button class="v" id="vbtn2">Voz</button>
+<button id="nova">Nova</button>
+<button class="p" id="salvar">Salvar ficha</button>
+</nav>
+
+<script>
+(function(){
+"use strict";
+var $=function(id){return document.getElementById(id)};
+var INST=["Violino","Viola","Violoncelo","Contrabaixo","Flauta","Oboe","Clarinete","Saxofone","Trompete","Trombone","Eufonio","Tuba","Orgao","Organistas","Irmandade","Visitantes"];
+var LABEL={"Oboe":"Oboé","Eufonio":"Eufônio","Orgao":"Órgão"};
+function lb(k){return LABEL[k]||k}
+var counts={},hinos=[],metodos=[],freq=[],tipo="regional";
+var LS_F="fichaEnsaioV1",LS_C="fichaEnsaioCfgV1";
+function hoje(){var d=new Date();return d.toISOString().slice(0,10)}
+if(!$("data").value)$("data").value=hoje();
+function norm(s){return (s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")}
+function say(t){$("vout").textContent=t}
+function total(){var t=0;INST.forEach(function(k){t+=counts[k]||0});$("total").textContent=t;return t}
+/* contagem */
+function renderCounts(){
+var g=$("contagem");g.innerHTML="";
+INST.forEach(function(k){
+counts[k]=counts[k]||0;
+var d=document.createElement("div");d.className="ctr";
+d.innerHTML="<b>"+lb(k)+"</b><div><button aria-label='menos'>-</button><span>"+counts[k]+"</span><button class='plus' aria-label='mais'>+</button></div>";
+var btns=d.querySelectorAll("button"),sp=d.querySelector("span");
+btns[0].onclick=function(){counts[k]=Math.max(0,counts[k]-1);sp.textContent=counts[k];total()};
+btns[1].onclick=function(){counts[k]++;sp.textContent=counts[k];total()};
+g.appendChild(d);
+});
+total();
+}
+/* listas */
+function rowHino(h,i){
+var d=document.createElement("div");d.className="item";
+d.innerHTML="<input placeholder='Nº do hino' inputmode='numeric' value='"+(h.n||"")+"'><input placeholder='Título ou obs (opc.)' value='"+(h.t||"")+"'><button aria-label='remover'>×</button>";
+var ins=d.querySelectorAll("input");
+ins[0].oninput=function(){h.n=ins[0].value};
+ins[1].oninput=function(){h.t=ins[1].value};
+d.querySelector("button").onclick=function(){hinos.splice(i,1);renderHinos()};
+return d;
+}
+function renderHinos(){var g=$("hinos");g.innerHTML="";hinos.forEach(function(h,i){g.appendChild(rowHino(h,i))});if(!hinos.length)g.innerHTML="<p class='cmds'>Nenhum hino ainda. Toque abaixo ou dite por voz.</p>"}
+function renderMet(){var g=$("metodos");g.innerHTML="";metodos.forEach(function(m,i){
+var d=document.createElement("div");d.className="item";
+d.innerHTML="<input placeholder='Ex.: GEM fase 2, método vol. 1' value='"+(m.v||"")+"'><button aria-label='remover'>×</button>";
+d.querySelector("input").oninput=function(e){m.v=e.target.value};
+d.querySelector("button").onclick=function(){metodos.splice(i,1);renderMet()};
+g.appendChild(d)});if(!metodos.length)g.innerHTML="<p class='cmds'>Nenhum método ainda.</p>"}
+function renderFreq(){var g=$("freq");g.innerHTML="";freq.forEach(function(f,i){
+var d=document.createElement("div");d.className="item";
+d.innerHTML="<input placeholder='Nome' value='"+(f.n||"")+"'><input placeholder='Instrumento' value='"+(f.i||"")+"'><button aria-label='remover'>×</button>";
+var ins=d.querySelectorAll("input");
+ins[0].oninput=function(){f.n=ins[0].value};
+ins[1].oninput=function(){f.i=ins[1].value};
+d.querySelector("button").onclick=function(){freq.splice(i,1);renderFreq()};
+g.appendChild(d)});if(!freq.length)g.innerHTML="<p class='cmds'>Opcional. Para ensaio local com chamada nominal.</p>"}
+$("addHino").onclick=function(){hinos.push({n:"",t:""});renderHinos()};
+$("addMet").onclick=function(){metodos.push({v:""});renderMet()};
+$("addFreq").onclick=function(){freq.push({n:"",i:""});renderFreq()};
+/* tipo */
+document.querySelectorAll("#tipo button").forEach(function(b){b.onclick=function(){
+document.querySelectorAll("#tipo button").forEach(function(x){x.classList.remove("on")});
+b.classList.add("on");tipo=b.getAttribute("data-t")}});
+function getTipo(){var b=document.querySelector("#tipo button.on");return b?b.getAttribute("data-t"):"regional"}
+/* comuns */
+function getCfg(){try{return JSON.parse(localStorage.getItem(LS_C)||"{}")}catch(e){return{}}}
+function saveCfg(c){try{localStorage.setItem(LS_C,JSON.stringify(c))}catch(e){}}
+function renderComuns(){
+var c=getCfg();c.comuns=c.comuns||[];
+var g=$("comuns");g.innerHTML="";
+c.comuns.forEach(function(n){
+var b=document.createElement("button");b.textContent=n;
+b.onclick=function(){$("comum").value=n};
+g.appendChild(b);
+});
+if(!c.comuns.length)g.innerHTML="<p class='cmds'>Salve as comuns de SJC para reutilizar.</p>";
+if(c.cidade)$("cidade").value=c.cidade;
+}
+$("addComum").onclick=function(){
+var v=$("novaComum").value.trim();if(!v)return;
+var c=getCfg();c.comuns=c.comuns||[];
+if(c.comuns.indexOf(v)<0)c.comuns.push(v);
+c.cidade=$("cidade").value.trim();
+saveCfg(c);$("novaComum").value="";renderComuns();
+};
+$("cidade").onchange=function(){var c=getCfg();c.cidade=$("cidade").value.trim();saveCfg(c)};
+/* ficha */
+function ficha(){
+return {tipo:getTipo(),cidade:$("cidade").value.trim(),comum:$("comum").value.trim(),endereco:$("endereco").value.trim(),
+data:$("data").value,hora:$("hora").value,encReg:$("encReg").value.trim(),encLoc:$("encLoc").value.trim(),
+counts:Object.assign({},counts),total:total(),hinos:hinos.filter(function(h){return h.n||h.t}),
+metodos:metodos.map(function(m){return m.v}).filter(Boolean),freq:freq.filter(function(f){return f.n||f.i}),
+obs:$("obs").value.trim(),prox:$("prox").value,visto:$("visto").value.trim(),criadaEm:new Date().toISOString()};
+}
+function loadF(f){
+tipo=f.tipo||"regional";
+document.querySelectorAll("#tipo button").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-t")===tipo)});
+$("cidade").value=f.cidade||"São José dos Campos";$("comum").value=f.comum||"";
+$("endereco").value=f.endereco||"";$("data").value=f.data||hoje();$("hora").value=f.hora||"19:30";
+$("encReg").value=f.encReg||"";$("encLoc").value=f.encLoc||"";
+counts=Object.assign({},f.counts||{});renderCounts();
+hinos=(f.hinos||[]).map(function(h){return typeof h==="string"?{n:h,t:""}:h});renderHinos();
+metodos=(f.metodos||[]).map(function(v){return{v:v}});renderMet();
+freq=(f.freq||[]).map(function(x){return{n:x.n||"",i:x.i||""}});renderFreq();
+$("obs").value=f.obs||"";$("prox").value=f.prox||"";$("visto").value=f.visto||"";
+window.scrollTo({top:0,behavior:"smooth"});
+}
+function getHist(){try{return JSON.parse(localStorage.getItem(LS_F)||"[]")}catch(e){return[]}}
+function setHist(h){try{localStorage.setItem(LS_F,JSON.stringify(h))}catch(e){say("Memória cheia. Exporte o JSON e apague fichas antigas.")}}
+function renderHist(){
+var h=getHist(),g=$("hist");g.innerHTML="";
+if(!h.length){g.innerHTML="<p class='cmds'>Nenhuma ficha salva ainda.</p>";return}
+h.slice().reverse().forEach(function(f){
+var idx=h.indexOf(f);
+var d=document.createElement("div");d.className="hist";
+d.innerHTML="<div><span><b>"+f.tipo+" "+(f.data||"")+"</b> <small>"+(f.comum||"")+" · "+f.total+" músicos</small></span></div>";
+var row=document.createElement("div");
+[["Abrir",function(){loadF(f)}],["Duplicar",function(){var c=getHist();c.push(Object.assign({},f,{criadaEm:new Date().toISOString()}));setHist(c);renderHist();say("Ficha duplicada.")}],["Apagar",function(){var c=getHist();c.splice(idx,1);setHist(c);renderHist()}]
+].forEach(function(a){var b=document.createElement("button");b.textContent=a[0];b.onclick=a[1];row.appendChild(b);d.appendChild(row)});
+g.appendChild(d);
+});
+}
+function salvar(silent){
+var f=ficha();
+if(!f.comum){say("Informe a comum anfitriã antes de salvar.");$("comum").focus();return null}
+if(!f.data){say("Informe a data antes de salvar.");return null}
+var h=getHist();h.push(f);setHist(h);renderHist();
+if(!silent)say("Ficha "+f.tipo+" de "+f.comum+" salva. Total "+f.total+" músicos e "+f.hinos.length+" hinos.");
+return f;
+}
+$("salvar").onclick=function(){salvar(false)};
+$("nova").onclick=function(){counts={};hinos=[];metodos=[];freq=[];$("comum").value="";$("endereco").value="";$("encReg").value="";$("encLoc").value="";$("obs").value="";$("prox").value="";$("visto").value="";$("data").value=hoje();renderCounts();renderHinos();renderMet();renderFreq();say("Nova ficha em branco. Cidade mantida.")};
+/* export */
+function dl(name,content,type){var b=new Blob([content],{type:type});var a=document.createElement("a");a.href=URL.createObjectURL(b);a.download=name;a.click();setTimeout(function(){URL.revokeObjectURL(a.href)},2000)}
+$("expJson").onclick=function(){var h=getHist();if(!h.length){say("Nada para exportar.");return}dl("fichas-ensaio.json",JSON.stringify(h,null,2),"application/json")};
+$("expCsv").onclick=function(){
+var h=getHist();if(!h.length){say("Nada para exportar.");return}
+var rows=["tipo;data;hora;cidade;comum;total;hinos;organistas;irmandade"];
+h.forEach(function(f){rows.push([f.tipo,f.data,f.hora,'"'+(f.cidade||"")+'"','"'+(f.comum||"")+'"',f.total,'"'+f.hinos.map(function(x){return x.n}).join(" ")+'"',(f.counts||{}).Organistas||0,(f.counts||{}).Irmandade||0].join(";"))});
+dl("fichas-ensaio.csv",rows.join("\n"),"text/csv");
+};
+$("imp").onclick=function(){window.print()};
+$("zap").onclick=function(){
+var f=ficha();
+var t="Ensaio "+f.tipo+" "+f.data+" "+(f.hora||"")+"%0A"+encodeURIComponent(f.cidade)+", "+encodeURIComponent(f.comum)+"%0ATotal: "+f.total+" músicos%0AHinos: "+encodeURIComponent(f.hinos.map(function(x){return x.n}).join(", ")||"-")+"%0AObs: "+encodeURIComponent(f.obs||"-");
+window.open("https://wa.me/?text="+t,"_blank");
+};
+/* voz */
+function addHinoN(n){hinos.push({n:String(n),t:""});renderHinos()}
+function addCount(key,q){counts[key]=(counts[key]||0)+q;renderCounts()}
+function hear(raw){
+var l=norm(raw);
+if(/nova ficha/.test(l)){$("nova").click();return}
+if(/salvar/.test(l)){salvar(false);return}
+if(/ensaio regional/.test(l))tipo="regional";
+else if(/ensaio local/.test(l))tipo="local";
+else if(/ensaio parcial/.test(l))tipo="parcial";
+document.querySelectorAll("#tipo button").forEach(function(x){x.classList.toggle("on",x.getAttribute("data-t")===tipo)});
+if(/amanha/.test(l)){var d=new Date();d.setDate(d.getDate()+1);$("data").value=d.toISOString().slice(0,10)}
+else if(/hoje/.test(l))$("data").value=hoje();
+var mC=l.match(/comum ([a-z ]+)/);if(mC){$("comum").value=mC[1].trim().replace(/\b\w/g,function(c){return c.toUpperCase()})}
+var mH=l.match(/hino (\d+)/);if(mH)addHinoN(mH[1]);
+var mQ=l.match(/(\d+)\s+(violino|viola|violoncelo|contrabaixo|flauta|oboe|clarinete|saxofone|sax|trompete|trombone|eufonio|tuba|orgao|organista|irmandade|visitante)/);
+if(mQ){var q=parseInt(mQ[1],10),k=mQ[2];
+var MAP={violino:"Violino",viola:"Viola",violoncelo:"Violoncelo",contrabaixo:"Contrabaixo",flauta:"Flauta",oboe:"Oboe",clarinete:"Clarinete",saxofone:"Saxofone",sax:"Saxofone",trompete:"Trompete",trombone:"Trombone",eufonio:"Eufonio",tuba:"Tuba",orgao:"Orgao",organista:"Organistas",irmandade:"Irmandade",visitante:"Visitantes"};
+if(k==="organista"||k==="irmandade"||k==="visitante"){counts[MAP[k]]=q}else{addCount(MAP[k],q);say("Somado "+q+" em "+MAP[k]+".");return}
+renderCounts();say("Registrado "+q+" "+MAP[k]+".");return}
+var mO=l.match(/observa\w*\s+(.+)/);if(mO){$("obs").value=(($("obs").value?$("obs").value+" ":"")+mO[1]).slice(0,500);say("Observação anotada.");return}
+say("Anotado: "+raw+". Confira os campos e toque em salvar ficha.");
+}
+function mic(){
+var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+if(!SR){say("Este navegador não tem voz. Use o Chrome no Android ou digite os campos.");return}
+var r=new SR();r.lang="pt-BR";r.interimResults=false;
+say("Ouvindo...");
+try{r.start()}catch(e){}
+r.onresult=function(e){var t=e.results[0][0].transcript;hear(t)};
+r.onerror=function(){say("Não ouvi. Tente de novo.")};
+}
+$("vbtn").onclick=mic;$("vbtn2").onclick=mic;
+$("ajuda").onclick=function(){say("Diga: ensaio regional amanhã na comum Aquarius. Adicionar hino 123. 5 violinos. 10 organistas. Observação órgão com defeito. Salvar ficha.")};
+/* init */
+renderCounts();renderHinos();renderMet();renderFreq();renderComuns();renderHist();
+})();
+</script>
+</body>
+</html>

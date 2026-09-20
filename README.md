@@ -4,6 +4,11 @@ Portal da CCB Jardim Nair em arquivo único (`index.html`). Fichas do grupo musi
 
 Produção: https://gem-jardim-nair-production.up.railway.app
 
+Ficha genérica SJC (qualquer comum, sem custo): `ensaio.html`, mesma pasta.
+Validar grátis: `python -m http.server 8000` e abrir `/ensaio.html`.
+Com voz em português, contagem por instrumento, hinos, métodos GEM,
+frequência local, impressão A4, JSON/CSV e WhatsApp. Tudo em localStorage.
+
 Deploy: Railway, projeto `gem-jardim-nair`, serviço ligado ao repo com Dockerfile nginx na porta 8080.
 
 ```powershell
