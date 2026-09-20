@@ -127,12 +127,12 @@ a{color:inherit}
 </div>
 </div>
 </section>
-<p class="cap">Foto ilustrativa do templo central. Troque por foto real do Jardim Nair quando enviar.</p>
+<p class="cap">Foto ilustrativa do templo central.</p>
 <div class="mq" aria-hidden="true"><div class="mq-t" id="mqt">
 <span>Cultos •</span><span>Ensaios •</span><span>Reuniões •</span><span>DARPE •</span><span>Fichas M11 •</span><span>Comando de voz •</span>
 </div></div>
 <section class="mn rv">
-<p>Quem serve não devia brigar com papel e planilha. <em>Aqui tudo se resolve falando:</em> agenda, presença, ficha e aviso.</p>
+<p>Organize sua agenda neste aparelho. <em>Use a voz ou o assistente:</em> anote eventos e abra o sistema de fichas.</p>
 </section>
 <section class="voice rv" id="voz">
 <div>
@@ -157,7 +157,7 @@ a{color:inherit}
 <div class="sv-g">
 <article class="cd rv"><n>I</n><h3>Fichas M11 digitais</h3><p>Acompanhamento de alunos, fases, tópicos e avaliações no sistema oficial.</p><f><span></span><a href="https://fichas-gem.up.railway.app/" target="_blank" rel="noopener">Abrir →</a></f></article>
 <article class="cd rv"><n>II</n><h3>Aulas e presença</h3><p>Teóricas e práticas com presença, anotações e visto do instrutor.</p><f><span></span><a href="https://fichas-gem.up.railway.app/" target="_blank" rel="noopener">Abrir →</a></f></article>
-<article class="cd rv"><n>III</n><h3>Relatórios</h3><p>PDF e Excel para a regência, com médias e aptidão calculadas.</p><f><span></span><a href="#voz">Pedir por voz →</a></f></article>
+<article class="cd rv"><n>III</n><h3>Relatórios</h3><p>Consulte as opções de relatórios e exportação no sistema de fichas.</p><f><span></span><a href="https://fichas-gem.up.railway.app/" target="_blank" rel="noopener">Abrir sistema →</a></f></article>
 </div>
 </section>
 <section class="sc" id="visita">
@@ -207,7 +207,7 @@ var st=document.createElement("style");st.textContent=css;document.head.appendCh
 var w=document.createElement("div");w.innerHTML='<button id="wxb" aria-label="Perguntar">✦</button><div id="wxp"><div id="wxh"><span>Assistente</span><span id="wxx">×</span></div><div id="wxm"></div><div id="wxf"><input id="wxi" placeholder="Pergunte..." autocomplete="off"><button id="wxs" aria-label="Enviar">→</button></div></div>';document.body.appendChild(w);
 var said=false;
 function say(t,who){var m=document.getElementById("wxm");var d=document.createElement("div");d.className=who;d.textContent=t;m.appendChild(d);m.scrollTop=m.scrollHeight}
-function answer(t){var l=t.toLowerCase(),best=null,bs=0;KB.forEach(function(e){var s=0;e.k.forEach(function(k){if(l.indexOf(k)>=0)s+=k.length});if(s>bs){bs=s;best=e}});say(best?best.a:FB,"b")}
+function answer(t){if(/^(agendar|listar eventos|quais eventos|abrir fichas|onde fica|ajuda)\b/i.test(t.trim())){hear(t);say($("#vout").textContent,"b");return}var l=t.toLowerCase(),best=null,bs=0;KB.forEach(function(e){var s=0;e.k.forEach(function(k){if(l.indexOf(k)>=0)s+=k.length});if(s>bs){bs=s;best=e}});say(best?best.a:FB,"b")}
 function send(){var i=document.getElementById("wxi");var t=i.value.trim();if(!t)return;say(t,"u");i.value="";setTimeout(function(){answer(t)},350)}
 document.getElementById("wxb").onclick=function(){var p=document.getElementById("wxp");p.classList.toggle("on");if(p.classList.contains("on")&&!said){said=true;say("A paz de Deus! Pergunte sobre cultos, ensaios, fichas ou endereço.","b")}};
 document.getElementById("wxx").onclick=function(){document.getElementById("wxp").classList.remove("on")};
@@ -219,12 +219,17 @@ var EV={};
 try{EV=JSON.parse(localStorage.getItem("gemjn1")||"{}")||{}}catch(e){EV={}}
 CATS.forEach(function(c){if(!EV[c[0]])EV[c[0]]=[]});
 function saveEV(){try{localStorage.setItem("gemjn1",JSON.stringify(EV))}catch(e){}}
+/** @param {string} text @returns {string} */
+function escapeEvent(text){
+var entities={"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"};
+return String(text).replace(/[&<>"']/g,function(character){return entities[character]});
+}
 function renderEV(){
 var g=$("#evg");g.innerHTML="";
 CATS.forEach(function(c){
 var box=document.createElement("div");box.className="ev rv on";
 var h="<h3>"+c[1]+" <small>"+EV[c[0]].length+"</small></h3><ul>";
-EV[c[0]].forEach(function(ev,i){h+="<li><span>"+ev+"</span><button data-c='"+c[0]+"' data-i='"+i+"' aria-label='Remover'>×</button></li>"});
+EV[c[0]].forEach(function(ev,i){h+="<li><span>"+escapeEvent(ev)+"</span><button data-c='"+c[0]+"' data-i='"+i+"' aria-label='Remover'>×</button></li>"});
 h+="</ul><form data-c='"+c[0]+"'><input placeholder='Ex.: domingo 18h' required><button>Agendar</button></form>";
 box.innerHTML=h;g.appendChild(box);
 });
